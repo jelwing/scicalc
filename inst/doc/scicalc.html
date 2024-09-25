@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>scicalc</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">scicalc</h1>
+
+
+
+<p>To install the scicalc package you can run the following two
+commands:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repos =</span> <span class="fu">c</span>(<span class="st">&#39;scicalc&#39;</span> <span class="ot">=</span> <span class="st">&quot;https://a2-ai.github.io/gh-pkg-mirror/scicalc&quot;</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>                  <span class="fu">getOption</span>(<span class="st">&quot;repos&quot;</span>)))</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;scicalc&quot;</span>)</span></code></pre></div>
+<div id="scicalc" class="section level1">
+<h1>Scicalc</h1>
+<p>Scicalc is a package of functions commonly used at A2-Ai. We hope
+this package will ease data assembly and allow for a more reproducible
+code across analysts and projects. It is in no way complete or all
+encompassing, but we hope this is a good start. Please let us know if
+there are additional functions we should include!</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(scicalc)</span></code></pre></div>
+<div id="reading-in-data" class="section level2">
+<h2>Reading in data</h2>
+<p>I’ll first try and read in data from
+<code>~/inst/extdata/data/source</code> - in R packages extra files go
+in the <code>inst</code> directory, but we can pretend this is just like
+a Project starter <code>data/source</code> directory.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>data_source <span class="ot">&lt;-</span> <span class="fu">file.path</span>(here<span class="sc">::</span><span class="fu">here</span>(), <span class="st">&quot;inst&quot;</span>, <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;data&quot;</span>, <span class="st">&quot;source&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(data_source)) {</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  scicalc<span class="sc">::</span><span class="fu">create_dir</span>(data_source) </span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="co"># I&#39;m using this scicalc::create_dir function to create this directory </span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="co"># the first time I&#39;m running this vignette. More on this later</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>}</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">list.files</span>(data_source)</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;dm.sas7bdat&quot;</span> <span class="st">&quot;lb.csv&quot;</span>      <span class="st">&quot;pc.parquet&quot;</span>  <span class="st">&quot;test.txt&quot;</span>    <span class="st">&quot;vs.parquet&quot;</span> </span></code></pre></div>
+<p>This is a contrived example, but there are several different file
+types in source data representing different SDTM domains. As well as a
+<code>test.txt</code> file. We can use the
+<code>read_file_with_hash</code> function to read in all the files in
+this source directory. No more creating
+<code>read_file_type_with_hash</code> functions in each script!</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>raw_data <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">list.files</span>(data_source, <span class="at">full.names =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  scicalc<span class="sc">::</span>read_file_with_hash) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">set_names</span>(tools<span class="sc">::</span><span class="fu">file_path_sans_ext</span>(<span class="fu">list.files</span>(data_source)))</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>dm.sas7bdat<span class="sc">:</span> 4afd3ab9282b65a38f630f0ba9074e95</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>lb.csv<span class="sc">:</span> b5e4122d4df0ec79401eb6bb0d2d0d85</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>Rows<span class="sc">:</span> <span class="dv">12</span> Columns<span class="sc">:</span> <span class="dv">11</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>── Column specification ────────────────────────────────────────────────────────</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>Delimiter<span class="sc">:</span> <span class="st">&quot;,&quot;</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="fu">chr</span> (<span class="dv">4</span>)<span class="sc">:</span> CREATU, CYSTCU, ASTU, BILIU</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="fu">dbl</span> (<span class="dv">7</span>)<span class="sc">:</span> ID, CREAT, CYSTC, AST, ULNAST, BILI, ULNBILI</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>ℹ Use <span class="st">`</span><span class="at">spec()</span><span class="st">`</span> to retrieve the full column specification <span class="cf">for</span> this data.</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>ℹ Specify the column types or set <span class="st">`</span><span class="at">show_col_types = FALSE</span><span class="st">`</span> to quiet this message.</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>pc.parquet<span class="sc">:</span> cb09ff9062323def6a827d25daf36606</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>Warning <span class="cf">in</span> <span class="fu">.f</span>(.x[[i]], ...)<span class="sc">:</span> File type<span class="sc">:</span> txt not currently supported</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>vs.parquet<span class="sc">:</span> c748d1e4e077a3eddf84e29c8139f98c</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">names</span>(raw_data)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;dm&quot;</span>   <span class="st">&quot;lb&quot;</span>   <span class="st">&quot;pc&quot;</span>   <span class="st">&quot;test&quot;</span> <span class="st">&quot;vs&quot;</span>  </span></code></pre></div>
+<p>We can see that each different file type was read with
+read_file_with_hash and saved to <code>raw_data</code>. We also got a
+warning for <code>test.txt</code> file was not currently supported. If
+there are any other file types you commonly read and want to print a
+hash besides <code>csv</code>, <code>parquet</code>, and
+<code>sas7bdat</code> please reach out so we can add that functionality!
+Behind the scenes of <code>read_file_with_hash</code> the extension of
+the file is determined and a corresponding function such as
+<code>read_parquet_with_hash</code> is called. You can call either, but
+I would recommend using the general
+<code>read_file_with_hash</code>.</p>
+</div>
+<div id="simple-data-analysis" class="section level2">
+<h2>Simple data analysis</h2>
+<p>Let’s do some bmi and bsa caclulations with the data in the vs
+domain</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> raw_data<span class="sc">$</span>pc</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">.data =</span> raw_data<span class="sc">$</span>vs,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="at">BBMI =</span> scicalc<span class="sc">::</span><span class="fu">bbmi</span>(WEIGHT, HEIGHT),</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    <span class="at">DBSA =</span> scicalc<span class="sc">::</span><span class="fu">bsa</span>(WEIGHT, HEIGHT),</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    <span class="at">MBSA =</span> scicalc<span class="sc">::</span><span class="fu">bsa</span>(WEIGHT, HEIGHT, <span class="at">method =</span> <span class="st">&quot;mosteller&quot;</span>))</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>df</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co"># A tibble: 12 × 8</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>   ID    HEIGHT WEIGHT    DV  NTLD  BBMI  DBSA  MBSA</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>   <span class="sc">&lt;</span>fct<span class="sc">&gt;</span>  <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>  <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">1</span>        <span class="dv">174</span>     <span class="dv">70</span>    <span class="dv">10</span>  <span class="dv">0</span>     <span class="fl">23.1</span>  <span class="fl">1.84</span>  <span class="fl">1.84</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">1</span>        <span class="dv">174</span>     <span class="dv">70</span>   <span class="dv">150</span>  <span class="fl">0.25</span>  <span class="fl">23.1</span>  <span class="fl">1.84</span>  <span class="fl">1.84</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">1</span>        <span class="dv">174</span>     <span class="dv">70</span>    <span class="dv">70</span>  <span class="dv">1</span>     <span class="fl">23.1</span>  <span class="fl">1.84</span>  <span class="fl">1.84</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">1</span>        <span class="dv">174</span>     <span class="dv">70</span>     <span class="dv">9</span>  <span class="dv">8</span>     <span class="fl">23.1</span>  <span class="fl">1.84</span>  <span class="fl">1.84</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">2</span>        <span class="dv">201</span>     <span class="dv">80</span>     <span class="dv">7</span>  <span class="dv">0</span>     <span class="fl">19.8</span>  <span class="fl">2.16</span>  <span class="fl">2.11</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">2</span>        <span class="dv">201</span>     <span class="dv">80</span>   <span class="dv">140</span>  <span class="fl">0.25</span>  <span class="fl">19.8</span>  <span class="fl">2.16</span>  <span class="fl">2.11</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">2</span>        <span class="dv">201</span>     <span class="dv">80</span>    <span class="dv">60</span>  <span class="dv">1</span>     <span class="fl">19.8</span>  <span class="fl">2.16</span>  <span class="fl">2.11</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">2</span>        <span class="dv">201</span>     <span class="dv">80</span>     <span class="dv">7</span>  <span class="dv">8</span>     <span class="fl">19.8</span>  <span class="fl">2.16</span>  <span class="fl">2.11</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">3</span>        <span class="dv">190</span>     <span class="dv">75</span>    <span class="dv">11</span>  <span class="dv">0</span>     <span class="fl">20.8</span>  <span class="fl">2.02</span>  <span class="fl">1.99</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="dv">10</span> <span class="dv">3</span>        <span class="dv">190</span>     <span class="dv">75</span>   <span class="dv">156</span>  <span class="fl">0.25</span>  <span class="fl">20.8</span>  <span class="fl">2.02</span>  <span class="fl">1.99</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="dv">11</span> <span class="dv">3</span>        <span class="dv">190</span>     <span class="dv">75</span>    <span class="dv">70</span>  <span class="dv">1</span>     <span class="fl">20.8</span>  <span class="fl">2.02</span>  <span class="fl">1.99</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="dv">12</span> <span class="dv">3</span>        <span class="dv">190</span>     <span class="dv">75</span>     <span class="dv">7</span>  <span class="dv">8</span>     <span class="fl">20.8</span>  <span class="fl">2.02</span>  <span class="fl">1.99</span></span></code></pre></div>
+<p>Now we can verify the lab units before moving on - remember this is a
+contrived dataset, but the workflow should be somewhat similar.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>dflb <span class="ot">&lt;-</span> raw_data<span class="sc">$</span>lb <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(<span class="st">&quot;ID&quot;</span>, <span class="st">&quot;CREAT&quot;</span>, <span class="st">&quot;CYSTC&quot;</span>, <span class="st">&quot;AST&quot;</span>, <span class="st">&quot;BILI&quot;</span>, )) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">&quot;CREAT&quot;</span>, <span class="st">&quot;CYSTC&quot;</span>, <span class="st">&quot;AST&quot;</span>, <span class="st">&quot;BILI&quot;</span>), </span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>                      <span class="at">names_to =</span> <span class="st">&quot;LBTESTCD&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;LBORRES&quot;</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>dfu <span class="ot">&lt;-</span> raw_data<span class="sc">$</span>lb <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(<span class="st">&quot;ID&quot;</span>, <span class="st">&quot;CREATU&quot;</span>, <span class="st">&quot;CYSTCU&quot;</span>, <span class="st">&quot;ASTU&quot;</span>, <span class="st">&quot;BILIU&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">&quot;CREATU&quot;</span>, <span class="st">&quot;CYSTCU&quot;</span>, <span class="st">&quot;ASTU&quot;</span>, <span class="st">&quot;BILIU&quot;</span>), </span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>                      <span class="at">names_to =</span> <span class="st">&quot;LBTESTCDU&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;LBORRESU&quot;</span>) </span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>lb <span class="ot">&lt;-</span> dflb <span class="sc">%&gt;%</span> </span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">LBORRESU =</span> dfu<span class="sc">$</span>LBORRESU)</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>lb</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co"># A tibble: 12 × 4</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>      ID LBTESTCD LBORRES LBORRESU</span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>   <span class="sc">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>      <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>   </span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a> <span class="dv">1</span>     <span class="dv">1</span> CREAT        <span class="dv">1</span>   mg<span class="sc">/</span>dL   </span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a> <span class="dv">2</span>     <span class="dv">1</span> CYSTC        <span class="fl">0.4</span> mg<span class="sc">/</span>L    </span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a> <span class="dv">3</span>     <span class="dv">1</span> AST         <span class="dv">15</span>   U<span class="sc">/</span>L     </span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a> <span class="dv">4</span>     <span class="dv">1</span> BILI         <span class="fl">0.8</span> mg<span class="sc">/</span>dL   </span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a> <span class="dv">5</span>     <span class="dv">2</span> CREAT        <span class="dv">4</span>   mg<span class="sc">/</span>dL   </span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a> <span class="dv">6</span>     <span class="dv">2</span> CYSTC        <span class="fl">0.9</span> mg<span class="sc">/</span>L    </span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a> <span class="dv">7</span>     <span class="dv">2</span> AST         <span class="dv">29</span>   U<span class="sc">/</span>L     </span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a> <span class="dv">8</span>     <span class="dv">2</span> BILI         <span class="fl">1.9</span> mg<span class="sc">/</span>dL   </span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a> <span class="dv">9</span>     <span class="dv">3</span> CREAT        <span class="dv">3</span>   mg<span class="sc">/</span>dL   </span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="dv">10</span>     <span class="dv">3</span> CYSTC        <span class="fl">0.7</span> mg<span class="sc">/</span>L    </span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a><span class="dv">11</span>     <span class="dv">3</span> AST         <span class="dv">38</span>   U<span class="sc">/</span>L     </span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a><span class="dv">12</span>     <span class="dv">3</span> BILI         <span class="fl">1.1</span> mg<span class="sc">/</span>dL   </span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="cf">if</span> (scicalc<span class="sc">::</span><span class="fu">check_for_unique_units</span>(lb<span class="sc">$</span>LBTESTCD, lb<span class="sc">$</span>LBORRESU)) {</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">&quot;Units are 1:1!&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">&quot;Error with units!&quot;</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>}</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;Units are 1:1!&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>scicalc<span class="sc">::</span><span class="fu">get_unique_units_df</span>(lb<span class="sc">$</span>LBTESTCD, lb<span class="sc">$</span>LBORRESU)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  PARAM  UNIT</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="dv">1</span> CREAT mg<span class="sc">/</span>dL</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="dv">2</span> CYSTC  mg<span class="sc">/</span>L</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="dv">3</span>   AST   U<span class="sc">/</span>L</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="dv">4</span>  BILI mg<span class="sc">/</span>dL</span></code></pre></div>
+<p>Now we can use the lab data to calculate hepatic function.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">.data =</span> raw_data<span class="sc">$</span>lb, </span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>    <span class="at">BHFC =</span> scicalc<span class="sc">::</span><span class="fu">bhfc</span>(AST, ULNAST, BILI, ULNBILI),</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  )</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>df</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co"># A tibble: 12 × 19</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>   ID    CREAT CREATU CYSTC CYSTCU   AST ULNAST  BILI ULNBILI ASTU  BILIU HEIGHT</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>   <span class="sc">&lt;</span>fct<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>  <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>  <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>  <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>   <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>  <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">1</span>         <span class="dv">1</span> mg<span class="sc">/</span>dL    <span class="fl">0.4</span> mg<span class="sc">/</span>L      <span class="dv">15</span>     <span class="dv">33</span>   <span class="fl">0.8</span>     <span class="fl">1.2</span> U<span class="sc">/</span>L   mg<span class="sc">/</span>dL    <span class="dv">174</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">1</span>         <span class="dv">1</span> mg<span class="sc">/</span>dL    <span class="fl">0.4</span> mg<span class="sc">/</span>L      <span class="dv">15</span>     <span class="dv">33</span>   <span class="fl">0.8</span>     <span class="fl">1.2</span> U<span class="sc">/</span>L   mg<span class="sc">/</span>dL    <span class="dv">174</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">1</span>         <span class="dv">1</span> mg<span class="sc">/</span>dL    <span class="fl">0.4</span> mg<span class="sc">/</span>L      <span class="dv">15</span>     <span class="dv">33</span>   <span class="fl">0.8</span>     <span class="fl">1.2</span> U<span class="sc">/</span>L   mg<span class="sc">/</span>dL    <span class="dv">174</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">1</span>         <span class="dv">1</span> mg<span class="sc">/</span>dL    <span class="fl">0.4</span> mg<span class="sc">/</span>L      <span class="dv">15</span>     <span class="dv">33</span>   <span class="fl">0.8</span>     <span class="fl">1.2</span> U<span class="sc">/</span>L   mg<span class="sc">/</span>dL    <span class="dv">174</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">2</span>         <span class="dv">4</span> mg<span class="sc">/</span>dL    <span class="fl">0.9</span> mg<span class="sc">/</span>L      <span class="dv">29</span>     <span class="dv">33</span>   <span class="fl">1.9</span>     <span class="fl">1.2</span> U<span class="sc">/</span>L   mg<span class="sc">/</span>dL    <span class="dv">201</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">2</span>         <span class="dv">4</span> mg<span class="sc">/</span>dL    <span class="fl">0.9</span> mg<span class="sc">/</span>L      <span class="dv">29</span>     <span class="dv">33</span>   <span class="fl">1.9</span>     <span class="fl">1.2</span> U<span class="sc">/</span>L   mg<span class="sc">/</span>dL    <span class="dv">201</span></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">2</span>         <span class="dv">4</span> mg<span class="sc">/</span>dL    <span class="fl">0.9</span> mg<span class="sc">/</span>L      <span class="dv">29</span>     <span class="dv">33</span>   <span class="fl">1.9</span>     <span class="fl">1.2</span> U<span class="sc">/</span>L   mg<span class="sc">/</span>dL    <span class="dv">201</span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">2</span>         <span class="dv">4</span> mg<span class="sc">/</span>dL    <span class="fl">0.9</span> mg<span class="sc">/</span>L      <span class="dv">29</span>     <span class="dv">33</span>   <span class="fl">1.9</span>     <span class="fl">1.2</span> U<span class="sc">/</span>L   mg<span class="sc">/</span>dL    <span class="dv">201</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">3</span>         <span class="dv">3</span> mg<span class="sc">/</span>dL    <span class="fl">0.7</span> mg<span class="sc">/</span>L      <span class="dv">38</span>     <span class="dv">33</span>   <span class="fl">1.1</span>     <span class="fl">1.2</span> U<span class="sc">/</span>L   mg<span class="sc">/</span>dL    <span class="dv">190</span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="dv">10</span> <span class="dv">3</span>         <span class="dv">3</span> mg<span class="sc">/</span>dL    <span class="fl">0.7</span> mg<span class="sc">/</span>L      <span class="dv">38</span>     <span class="dv">33</span>   <span class="fl">1.1</span>     <span class="fl">1.2</span> U<span class="sc">/</span>L   mg<span class="sc">/</span>dL    <span class="dv">190</span></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="dv">11</span> <span class="dv">3</span>         <span class="dv">3</span> mg<span class="sc">/</span>dL    <span class="fl">0.7</span> mg<span class="sc">/</span>L      <span class="dv">38</span>     <span class="dv">33</span>   <span class="fl">1.1</span>     <span class="fl">1.2</span> U<span class="sc">/</span>L   mg<span class="sc">/</span>dL    <span class="dv">190</span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="dv">12</span> <span class="dv">3</span>         <span class="dv">3</span> mg<span class="sc">/</span>dL    <span class="fl">0.7</span> mg<span class="sc">/</span>L      <span class="dv">38</span>     <span class="dv">33</span>   <span class="fl">1.1</span>     <span class="fl">1.2</span> U<span class="sc">/</span>L   mg<span class="sc">/</span>dL    <span class="dv">190</span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co"># ℹ 7 more variables: WEIGHT &lt;dbl&gt;, DV &lt;dbl&gt;, NTLD &lt;dbl&gt;, BBMI &lt;dbl&gt;,</span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="co">#   DBSA &lt;dbl&gt;, MBSA &lt;dbl&gt;, BHFC &lt;dbl&gt;</span></span></code></pre></div>
+<p>Now we’ll need the demographics needed for Creatinine clearance,
+estimated glomerular filtration rate, and renal function.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">.data =</span> raw_data<span class="sc">$</span>dm, </span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>    <span class="at">CRCL =</span> scicalc<span class="sc">::</span><span class="fu">crcl</span>(scicalc<span class="sc">::</span><span class="fu">is_female</span>(SEX), AGE, CREAT, WEIGHT),</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>    <span class="at">BRFC =</span> scicalc<span class="sc">::</span><span class="fu">brfc</span>(CRCL),</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>    </span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>    <span class="at">ckdepi_2009_egfr =</span> scicalc<span class="sc">::</span><span class="fu">egfr</span>(</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>      <span class="at">sexf =</span> scicalc<span class="sc">::</span><span class="fu">is_female</span>(SEX), </span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>      <span class="at">raceb =</span> scicalc<span class="sc">::</span><span class="fu">is_black</span>(RACE), </span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>      <span class="at">age =</span> AGE, </span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>      <span class="at">creat =</span> CREAT,</span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">&quot;CKDEPI 2009&quot;</span>),</span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>    <span class="at">ckdepi_2021_egfr =</span> scicalc<span class="sc">::</span><span class="fu">egfr</span>(</span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>      <span class="at">sexf =</span> scicalc<span class="sc">::</span><span class="fu">is_female</span>(SEX), </span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a>      <span class="at">age =</span> AGE, </span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a>      <span class="at">creat =</span> CREAT, </span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a>      <span class="at">cystc =</span> CYSTC, </span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">&quot;CKDEPI 2021&quot;</span>),</span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a>    <span class="at">mdrd_egfr =</span> scicalc<span class="sc">::</span><span class="fu">egfr</span>(</span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a>      <span class="at">sexf =</span> scicalc<span class="sc">::</span><span class="fu">is_female</span>(SEX), </span>
+<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a>      <span class="at">raceb =</span> scicalc<span class="sc">::</span><span class="fu">is_black</span>(RACE), </span>
+<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a>      <span class="at">age =</span> AGE, </span>
+<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a>      <span class="at">creat =</span> CREAT,</span>
+<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">&quot;MDRD&quot;</span>),</span>
+<span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a>    <span class="at">schwartz_egfr =</span> scicalc<span class="sc">::</span><span class="fu">egfr</span>(</span>
+<span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a>      <span class="at">height =</span> HEIGHT,</span>
+<span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a>      <span class="at">creat =</span> CREAT,</span>
+<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a>      <span class="at">method =</span> <span class="st">&quot;Schwartz&quot;</span></span>
+<span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a>    )</span>
+<span id="cb11-29"><a href="#cb11-29" tabindex="-1"></a>  )</span>
+<span id="cb11-30"><a href="#cb11-30" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" tabindex="-1"></a>df</span>
+<span id="cb11-32"><a href="#cb11-32" tabindex="-1"></a><span class="co"># A tibble: 12 × 28</span></span>
+<span id="cb11-33"><a href="#cb11-33" tabindex="-1"></a>   ID    SEX   RACE    AGE CREAT CREATU CYSTC CYSTCU   AST ULNAST  BILI ULNBILI</span>
+<span id="cb11-34"><a href="#cb11-34" tabindex="-1"></a>   <span class="sc">&lt;</span>fct<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>  <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>  <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>  <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>   <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb11-35"><a href="#cb11-35" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">1</span>     F     WHITE    <span class="dv">24</span>     <span class="dv">1</span> mg<span class="sc">/</span>dL    <span class="fl">0.4</span> mg<span class="sc">/</span>L      <span class="dv">15</span>     <span class="dv">33</span>   <span class="fl">0.8</span>     <span class="fl">1.2</span></span>
+<span id="cb11-36"><a href="#cb11-36" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">1</span>     F     WHITE    <span class="dv">24</span>     <span class="dv">1</span> mg<span class="sc">/</span>dL    <span class="fl">0.4</span> mg<span class="sc">/</span>L      <span class="dv">15</span>     <span class="dv">33</span>   <span class="fl">0.8</span>     <span class="fl">1.2</span></span>
+<span id="cb11-37"><a href="#cb11-37" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">1</span>     F     WHITE    <span class="dv">24</span>     <span class="dv">1</span> mg<span class="sc">/</span>dL    <span class="fl">0.4</span> mg<span class="sc">/</span>L      <span class="dv">15</span>     <span class="dv">33</span>   <span class="fl">0.8</span>     <span class="fl">1.2</span></span>
+<span id="cb11-38"><a href="#cb11-38" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">1</span>     F     WHITE    <span class="dv">24</span>     <span class="dv">1</span> mg<span class="sc">/</span>dL    <span class="fl">0.4</span> mg<span class="sc">/</span>L      <span class="dv">15</span>     <span class="dv">33</span>   <span class="fl">0.8</span>     <span class="fl">1.2</span></span>
+<span id="cb11-39"><a href="#cb11-39" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">2</span>     M     BLACK    <span class="dv">22</span>     <span class="dv">4</span> mg<span class="sc">/</span>dL    <span class="fl">0.9</span> mg<span class="sc">/</span>L      <span class="dv">29</span>     <span class="dv">33</span>   <span class="fl">1.9</span>     <span class="fl">1.2</span></span>
+<span id="cb11-40"><a href="#cb11-40" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">2</span>     M     BLACK    <span class="dv">22</span>     <span class="dv">4</span> mg<span class="sc">/</span>dL    <span class="fl">0.9</span> mg<span class="sc">/</span>L      <span class="dv">29</span>     <span class="dv">33</span>   <span class="fl">1.9</span>     <span class="fl">1.2</span></span>
+<span id="cb11-41"><a href="#cb11-41" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">2</span>     M     BLACK    <span class="dv">22</span>     <span class="dv">4</span> mg<span class="sc">/</span>dL    <span class="fl">0.9</span> mg<span class="sc">/</span>L      <span class="dv">29</span>     <span class="dv">33</span>   <span class="fl">1.9</span>     <span class="fl">1.2</span></span>
+<span id="cb11-42"><a href="#cb11-42" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">2</span>     M     BLACK    <span class="dv">22</span>     <span class="dv">4</span> mg<span class="sc">/</span>dL    <span class="fl">0.9</span> mg<span class="sc">/</span>L      <span class="dv">29</span>     <span class="dv">33</span>   <span class="fl">1.9</span>     <span class="fl">1.2</span></span>
+<span id="cb11-43"><a href="#cb11-43" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">3</span>     F     ASIAN    <span class="dv">35</span>     <span class="dv">3</span> mg<span class="sc">/</span>dL    <span class="fl">0.7</span> mg<span class="sc">/</span>L      <span class="dv">38</span>     <span class="dv">33</span>   <span class="fl">1.1</span>     <span class="fl">1.2</span></span>
+<span id="cb11-44"><a href="#cb11-44" tabindex="-1"></a><span class="dv">10</span> <span class="dv">3</span>     F     ASIAN    <span class="dv">35</span>     <span class="dv">3</span> mg<span class="sc">/</span>dL    <span class="fl">0.7</span> mg<span class="sc">/</span>L      <span class="dv">38</span>     <span class="dv">33</span>   <span class="fl">1.1</span>     <span class="fl">1.2</span></span>
+<span id="cb11-45"><a href="#cb11-45" tabindex="-1"></a><span class="dv">11</span> <span class="dv">3</span>     F     ASIAN    <span class="dv">35</span>     <span class="dv">3</span> mg<span class="sc">/</span>dL    <span class="fl">0.7</span> mg<span class="sc">/</span>L      <span class="dv">38</span>     <span class="dv">33</span>   <span class="fl">1.1</span>     <span class="fl">1.2</span></span>
+<span id="cb11-46"><a href="#cb11-46" tabindex="-1"></a><span class="dv">12</span> <span class="dv">3</span>     F     ASIAN    <span class="dv">35</span>     <span class="dv">3</span> mg<span class="sc">/</span>dL    <span class="fl">0.7</span> mg<span class="sc">/</span>L      <span class="dv">38</span>     <span class="dv">33</span>   <span class="fl">1.1</span>     <span class="fl">1.2</span></span>
+<span id="cb11-47"><a href="#cb11-47" tabindex="-1"></a><span class="co"># ℹ 16 more variables: ASTU &lt;chr&gt;, BILIU &lt;chr&gt;, HEIGHT &lt;dbl&gt;, WEIGHT &lt;dbl&gt;,</span></span>
+<span id="cb11-48"><a href="#cb11-48" tabindex="-1"></a><span class="co">#   DV &lt;dbl&gt;, NTLD &lt;dbl&gt;, BBMI &lt;dbl&gt;, DBSA &lt;dbl&gt;, MBSA &lt;dbl&gt;, BHFC &lt;dbl&gt;,</span></span>
+<span id="cb11-49"><a href="#cb11-49" tabindex="-1"></a><span class="co">#   CRCL &lt;dbl&gt;, BRFC &lt;dbl&gt;, ckdepi_2009_egfr &lt;dbl&gt;, ckdepi_2021_egfr &lt;dbl&gt;,</span></span>
+<span id="cb11-50"><a href="#cb11-50" tabindex="-1"></a><span class="co">#   mdrd_egfr &lt;dbl&gt;, schwartz_egfr &lt;dbl&gt;</span></span></code></pre></div>
+</div>
+<div id="writting-data" class="section level2">
+<h2>Writting data</h2>
+<p>We can use the <code>write_file_with_hash</code> to write
+<code>parquet</code> files (We highly recommend you write all data to
+parquet unless there is a specific need for other file type). We just
+need to supply a path to the file if the directory the file should be
+written to does not exist, this function will create it and all
+directories needed on the path. This function won’t let us overwrite the
+file unless we supply <code>overwrite = TRUE</code></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>data_derived <span class="ot">&lt;-</span> <span class="fu">file.path</span>(here<span class="sc">::</span><span class="fu">here</span>(), <span class="st">&quot;inst&quot;</span>, <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;data&quot;</span>, <span class="st">&quot;derived&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">file.path</span>(data_derived, <span class="st">&quot;pk_data_v01.parquet&quot;</span>))) {</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  scicalc<span class="sc">::</span><span class="fu">write_file_with_hash</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>    df, <span class="fu">file.path</span>(data_derived, <span class="st">&quot;pk_data_v01.parquet&quot;</span>))  </span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">&quot;Overwriting data!&quot;</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>  scicalc<span class="sc">::</span><span class="fu">write_file_with_hash</span>(</span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>    df, <span class="fu">file.path</span>(data_derived, <span class="st">&quot;pk_data_v01.parquet&quot;</span>), <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>}</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">&quot;Overwriting data!&quot;</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="sc">/</span>tmp<span class="sc">/</span>RtmphCyThI<span class="sc">/</span>Rbuild2825d754056d7b<span class="sc">/</span>scicalc<span class="sc">/</span>inst<span class="sc">/</span>extdata<span class="sc">/</span>data<span class="sc">/</span>derived<span class="sc">/</span>pk_data_v01.parquet<span class="sc">:</span> 41fde04ca4aa6085eddbd8c1ef109684</span></code></pre></div>
+</div>
+<div id="reading-in-derived-data" class="section level2">
+<h2>Reading in derived data</h2>
+<p>Now if we want to read in the derived data and verify it is the data
+we think it is we can use <code>read_hashed_file</code>. This function
+will only let you ingest the data if the hash you supply matches the
+hash of the contents of the file.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co">#This hash is incorrect so the function errors</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">file.exists</span>(<span class="fu">file.path</span>(data_derived, <span class="st">&quot;pk_data_v01.parquet&quot;</span>))) {</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  testthat<span class="sc">::</span><span class="fu">expect_error</span>(scicalc<span class="sc">::</span><span class="fu">read_hashed_file</span>(<span class="fu">file.path</span>(data_derived, <span class="st">&quot;pk_data_v01.parquet&quot;</span>), <span class="st">&quot;d4e21e3e681bc282ee7a3e758b15cebe&quot;</span>))</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>}</span></code></pre></div>
+<p>Giving the correct hash let’s us access the data</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>data <span class="ot">&lt;-</span> scicalc<span class="sc">::</span><span class="fu">read_hashed_file</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="fu">file.path</span>(data_derived, <span class="st">&quot;pk_data_v01.parquet&quot;</span>), </span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="st">&quot;41fde04ca4aa6085eddbd8c1ef109684&quot;</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>data</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co"># A tibble: 12 × 28</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>   ID    SEX   RACE    AGE CREAT CREATU CYSTC CYSTCU   AST ULNAST  BILI ULNBILI</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>   <span class="sc">&lt;</span>fct<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>  <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>  <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>  <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>   <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a> <span class="dv">1</span> <span class="dv">1</span>     F     WHITE    <span class="dv">24</span>     <span class="dv">1</span> mg<span class="sc">/</span>dL    <span class="fl">0.4</span> mg<span class="sc">/</span>L      <span class="dv">15</span>     <span class="dv">33</span>   <span class="fl">0.8</span>     <span class="fl">1.2</span></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">1</span>     F     WHITE    <span class="dv">24</span>     <span class="dv">1</span> mg<span class="sc">/</span>dL    <span class="fl">0.4</span> mg<span class="sc">/</span>L      <span class="dv">15</span>     <span class="dv">33</span>   <span class="fl">0.8</span>     <span class="fl">1.2</span></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">1</span>     F     WHITE    <span class="dv">24</span>     <span class="dv">1</span> mg<span class="sc">/</span>dL    <span class="fl">0.4</span> mg<span class="sc">/</span>L      <span class="dv">15</span>     <span class="dv">33</span>   <span class="fl">0.8</span>     <span class="fl">1.2</span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">1</span>     F     WHITE    <span class="dv">24</span>     <span class="dv">1</span> mg<span class="sc">/</span>dL    <span class="fl">0.4</span> mg<span class="sc">/</span>L      <span class="dv">15</span>     <span class="dv">33</span>   <span class="fl">0.8</span>     <span class="fl">1.2</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">2</span>     M     BLACK    <span class="dv">22</span>     <span class="dv">4</span> mg<span class="sc">/</span>dL    <span class="fl">0.9</span> mg<span class="sc">/</span>L      <span class="dv">29</span>     <span class="dv">33</span>   <span class="fl">1.9</span>     <span class="fl">1.2</span></span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">2</span>     M     BLACK    <span class="dv">22</span>     <span class="dv">4</span> mg<span class="sc">/</span>dL    <span class="fl">0.9</span> mg<span class="sc">/</span>L      <span class="dv">29</span>     <span class="dv">33</span>   <span class="fl">1.9</span>     <span class="fl">1.2</span></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">2</span>     M     BLACK    <span class="dv">22</span>     <span class="dv">4</span> mg<span class="sc">/</span>dL    <span class="fl">0.9</span> mg<span class="sc">/</span>L      <span class="dv">29</span>     <span class="dv">33</span>   <span class="fl">1.9</span>     <span class="fl">1.2</span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">2</span>     M     BLACK    <span class="dv">22</span>     <span class="dv">4</span> mg<span class="sc">/</span>dL    <span class="fl">0.9</span> mg<span class="sc">/</span>L      <span class="dv">29</span>     <span class="dv">33</span>   <span class="fl">1.9</span>     <span class="fl">1.2</span></span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">3</span>     F     ASIAN    <span class="dv">35</span>     <span class="dv">3</span> mg<span class="sc">/</span>dL    <span class="fl">0.7</span> mg<span class="sc">/</span>L      <span class="dv">38</span>     <span class="dv">33</span>   <span class="fl">1.1</span>     <span class="fl">1.2</span></span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a><span class="dv">10</span> <span class="dv">3</span>     F     ASIAN    <span class="dv">35</span>     <span class="dv">3</span> mg<span class="sc">/</span>dL    <span class="fl">0.7</span> mg<span class="sc">/</span>L      <span class="dv">38</span>     <span class="dv">33</span>   <span class="fl">1.1</span>     <span class="fl">1.2</span></span>
+<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a><span class="dv">11</span> <span class="dv">3</span>     F     ASIAN    <span class="dv">35</span>     <span class="dv">3</span> mg<span class="sc">/</span>dL    <span class="fl">0.7</span> mg<span class="sc">/</span>L      <span class="dv">38</span>     <span class="dv">33</span>   <span class="fl">1.1</span>     <span class="fl">1.2</span></span>
+<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a><span class="dv">12</span> <span class="dv">3</span>     F     ASIAN    <span class="dv">35</span>     <span class="dv">3</span> mg<span class="sc">/</span>dL    <span class="fl">0.7</span> mg<span class="sc">/</span>L      <span class="dv">38</span>     <span class="dv">33</span>   <span class="fl">1.1</span>     <span class="fl">1.2</span></span>
+<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a><span class="co"># ℹ 16 more variables: ASTU &lt;chr&gt;, BILIU &lt;chr&gt;, HEIGHT &lt;dbl&gt;, WEIGHT &lt;dbl&gt;,</span></span>
+<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a><span class="co">#   DV &lt;dbl&gt;, NTLD &lt;dbl&gt;, BBMI &lt;dbl&gt;, DBSA &lt;dbl&gt;, MBSA &lt;dbl&gt;, BHFC &lt;dbl&gt;,</span></span>
+<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a><span class="co">#   CRCL &lt;dbl&gt;, BRFC &lt;dbl&gt;, ckdepi_2009_egfr &lt;dbl&gt;, ckdepi_2021_egfr &lt;dbl&gt;,</span></span>
+<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a><span class="co">#   mdrd_egfr &lt;dbl&gt;, schwartz_egfr &lt;dbl&gt;</span></span></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

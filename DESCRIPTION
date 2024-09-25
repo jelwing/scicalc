@@ -1,0 +1,22 @@
+Package: scicalc
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: What the package does (one paragraph).
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports: arrow, checkmate, digest, dplyr, haven, magrittr, pzfx, readr,
+        rlang, stats, stringr
+Suggests: knitr, rmarkdown, testthat (>= 3.0.0), ggplot2, here, purrr,
+        tools, tidyr
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+Repository: https://github.com/a2-ai-tech-training/scicalc.git
+NeedsCompilation: no
+Packaged: 2024-09-24 15:44:53 UTC; jenna
+Author: First Last [aut, cre] (YOUR-ORCID-ID)
+Maintainer: First Last <first.last@example.com>
